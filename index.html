@@ -1,0 +1,1312 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Конспект скринкаста по GIT</title>
+</head>
+<body>
+    <h1>Конфигурация</h1>
+    <h2>Основная конфигурация</h2>
+    <p>
+        <strong>git init</strong> создает репозиторий в папке проекта
+        <strong>git config user.name 'Ваше Имя'</strong>
+        <strong>git congit user.email</strong>
+        <strong>cat .git/config</strong>
+        <strong>git config diff.png.textconv "identify --format '%wx%h %b\n'"</strong> даст в конфиге строку:
+        <strong>
+            [diff "png"]
+                textconv = identify --format '%wx%h %b\n'
+        </strong>
+        уровни конфигурации
+        <strong>--system</strong> на уровне системы хран в директ git/etc В program files
+        <strong>--global</strong> на ур. пользователя обычно лежат в папке пользователя. где они хранятся, 
+        определяет формат XDG: путь хранится в переменной окружения
+       <strong> $XDG_CONFIG</strong>_HOME -если она вдруг есть, надо переместить из папки пользователя свой конфиг туда
+        эта перем. работает и для .gitignore И для .gitattributes
+        если ее нет, то в $HOME/.config
+        <strong>--local</strong> локальные (по дефолту)
+
+        <strong>git config --list</strong> просмотр конфигурации из всех конфигов
+        <strong>git congit --list --global</strong> только глоб.
+       <strong> git config --unset</strong> убрать параметры
+        <strong>git config --remove-section</strong> user удалит всю секцию
+
+        <strong>git config -h</strong> вызвать хелп краткий
+        <strong>git help config </strong>откроет подробный хелп
+
+        <em>ЛИСТАЛКА ПО УМОЛЧАНИЮ</em> в гит - less
+        <strong>f</strong> - листать дальше
+        <strong>q</strong> - выйти
+        <strong>/чтото</strong> ищет чтото
+        <strong>n</strong> поиск вперед
+        <strong>шифт n</strong> поиск назад
+        <strong>git config --global core.pager 'less-RFX'</strong>
+    </p>
+    <h2>Настройка редактора</h2>
+    <strong>
+        git config --global --edit == git config --global -e
+    </strong>    
+    по умолчанию редактор vim
+    <strong>git config --global core.editor \"C:\\Users\\istom\\AppData\\Local\\Programs\\Microsoft VS Code\\Code.exe\" --wait  </strong>
+    -w чтобы редактор не закрывался сам, и гит его ждал для разных редакторов разные ключи
+
+    00000000000000000000000000000000000000000000000000000000000000000000000
+000000000000000000----КОНФИГУРАЦИЯ---000000000000000000000000000000000
+00000000000000000000000000000000000000000000000000000000000000000000000
+
+----01 Основная конфигурация ----------------------------------------------------------------------
+
+git init создает репозиторий в папке проекта
+git config user.name 'Ваше Имя'
+git congit user.email
+cat .git/config
+git config diff.png.textconv "identify --format '%wx%h %b\n'" даст в конфиге строку:
+[diff "png"]
+	textconv = identify --format '%wx%h %b\n'
+уровни конфигурации
+--system на уровне системы хран в директ git/etc В program files
+--global на ур. пользователя обычно лежат в папке пользователя. где они хранятся, 
+определяет формат XDG: путь хранится в переменной окружения
+$XDG_CONFIG_HOME -если она вдруг есть, надо переместить из папки пользователя свой конфиг туда
+эта перем. работает и для .gitignore И для .gitattributes
+если ее нет, то в $HOME/.config
+--local локальные (по дефолту)
+
+git config --list просмотр конфигурации из всех конфигов
+git congit --list --global только глоб.
+git config --unset убрать параметры
+git config --remove-section user удалит всю секцию
+
+git config -h вызвать хелп краткий
+git help config откроет подробный хелп
+
+ЛИСТАЛКА ПО УМОЛЧАНИЮ в гит - less
+f - листать дальше
+q - выйти
+/чтото ищет чтото
+n поиск вперед
+шифт n поиск назад
+git config --global core.pager 'less-RFX'
+
+----02 Настройка редактора----------------------------------------------------------------------------------
+
+git config --global --edit == git config --global -e
+
+по умолчанию редактор vim
+git config --global core.editor ..
+ \"C:\\Users\\istom\\AppData\\Local\\Programs\\Microsoft VS Code\\Code.exe\" --wait  
+-w чтобы редактор не закрывался сам, и гит его ждал для разных редакторов разные ключи
+
+
+----03 Алиасы (псевдонимы для команд)----------------------------------------------------------------
+
+git config --global alias.c 'config --global'
+теперь git c вызовет конфиг
+можно сделать алиас на несколько команд, тогда нужен воскл. знак
+git config alias.sayhi '!echo 'git ...'; 'git ...'
+разделять тчк с зпт
+
+----04 Проблема с переводами строк Windows/Linux---------------------------------------------------
+
+под юникс-системами перевод стр. кодируется 1 байтом 0a(LF: "Line Feed")
+windows 2 байта 0d 0a (CR LF Caret Return Line Feed)
+м.б. проблемы при командной разработке
+
+
+---- 05 Настройка core.autocrlf для нормализации переводов строк--------------------------------
+
+в конфиге
+core.autocrlf true в гит crlf заменяется на lf а когда он отдает нам ф. обратно, заменяет обратно
+lf на crlf отл. вар. для виндовс
+core.autocrlf input односторонняя конвертация в гит переводится в lf обратно - lf
+это отл. вариант для юникс
+false ничего не делает с файлами
+чтобы определить, текстовый или бинарн. ф., гит смотрит на его содержимое
+к сожалению, он иногда ошибается и повреждает ф. при смене crlf на lf
+
+---- 08 Атрибуты: .gitattributes, text, eol----------------------------------------------------------------------
+
+настраивается к каким файлам применять какие настройки
+например:
+* text = auto
+
+#force text set
+*.html text
+*.js text
+*.css text
+
+# Windows files (need crlf)
+*.sln text eol=crlf
+*.bat eol=crlf
+
+#Unix files (need LF) set to a value
+*.sh eol=lf
+
+#binary files - unset attr.
+*.jpg -text     
+*.gif -text
+
+м.б. еще Unspecified. Настройки снизу перекрывают те что сверху
+eol - что делать  с переводами строки при взятии  из git В раб. директ.
+
+для текстовых ф. включается нормализация  - при переводе в git Становятся lf
+
+часто вместо -text Ставят binary. это т.ж. самое что -text -merge -diff
+
+если стоит eol это автоматич. подразумевает текстовые ф. Значение lf забавное - оно не меняет строки. Т.е. просто при чтении из гит переводы не меняются!!если eol нет git ориентируется на конфиг и ос.
+
+можно в атрибутах указать так * -text и тогда у всех ф. отключатся переводы строк
+.gitattributes очень рекомендуется иметь, он хранится в директории проекта, для командной разработки, чтобы у всех были настроены правильные переводы строк, и чтобы гит не повредил содержимое бинарных файлов
+гит ищет атрибуты так:
+.git/info/attributes - локальные атрибуты
+./gitattributes В дир. с целевым файлом
+потом выше выше до корня проекта
+потом в  config: core.attributesFile
+git config --global core.attributesFile ~/.gitattributes
+(default) $XDG_CONFIG_HOME/git/attributes
+/.config/git/atttibutes - Если перем. выше не указана
+/etc/gitattributes   /program files/git/etc/gitattributes
+
+полная справка git help attributes
+
+
+---- 07 Игнорирование: .gitignore-------------------------------------------------------------------------------------
+
+#OS-level helper (cache. folder preferences)
+Thumbs.db
+#path/to/anywhere/Thumbs.db
+.Ds_Store
+# any/folder/.Ds_Store
+
+#Logs
+*.log
+# anywhere.my.log. NOT my.logs, my.log.tmp
+
+#Compiled files
+*.class
+*.py[co]
+#same as: *.pyc OR *.pyo NOT *.pyco
+
+migrate-201[5-7]*
+#anywhere/migrate-2015, migrate-20170101.db, NOT migrate-2018...
+
+*.py?
+#anywhere/*.py<any char>, *.pyc OR *pyd NOT *.py
+
+#slash at the end means a folder
+build/
+# folder "build", NOT file "build"
+#if there is not slash may be directories or files
+
+#patterns above match anywhere in the project
+#/build
+#/scripts/build
+
+#PATH-AWARE MODE если слэш где-то кроме как в конце, ищется от корня
+/build/
+#build, but NOT scripts/build
+
+#in slash mode match relative to .gitignore
+secret/key
+#secret/key, NOT docs/secret/key
+
+doc/*.html
+#doc/file.html, NOT somewhere/doc/file.html
+
+/*.txt
+# my.txt, NOT somewhere/my.txt
+
+#wildcard matches within a path segment
+var/www*/tmp
+# var/www/tmp
+# var/www-home/tmp
+# NOT var/www/info/tmp
+
+#...or replaces a path segment 
+users/*/private
+#users/john/private
+#users/alice/private
+#NOT
+#users/private
+#users/john/protect/private
+
+#double wildcard ** replaces any number of path segments
+**/*.log
+#same as *.log
+
+**/app/cache
+#shop/app/cache
+#main/front/cache
+
+docs/**/*.html
+#docs/module/generated.html
+#docs/general/info/performance.html
+#NOT
+#subdir/docs/my.html
+
+#** can only be used as **/...
+#or .../**/,,,
+#or .../**
+
+.*
+!.gitattributes
+!.gitignore
+
+#DOESN'T WORK
+#install/ ignores directory, making its content unknown to git
+# so we can't "unignore" anything inside it
+/install/
+!install/packages.xml
+
+#INSTEAD
+#ignore not install/, but each item of its content
+# this way we can "unignore" it
+/install/*
+!install/packages.xml
+
+проверка
+git check-ignore -v install/something
+
+Файлы с гитигнорами
+<project>/.../.gitignore  игнорирует относительно гитигнор
+<project>/.git/info/exclude файл exclude не передается коллегам
+в конфиге core.excludesFile
+git config --global core.excludesFile ~/.gitignore
+(default) $XDG_CONFIG_HOME/git/ignore
+ Если нет перем. ~/.config/git/ignore  сюда можно 
+записать файлы специф. для системы, например, Thumbs.db
+
+----08 Подключение файлов в конфиг: include--------------------------------------
+
+Если большой конфиг
+git config include.path ../gitconfig
+относит путь отсчит от ф. конфигурации, то есть:
+.git/config -> project/gitconfig
+ если вызвать конфиг с одинак. ключом несколько раз, последняя настройка 
+перезапишет предыдущую, чтобы не перезаписала:
+git config --add include.path ../gitconfig
+т.о. можно структурировать сложн. конфиг или повторно использовать
+условный инклюд в глобальном конфиге:
+[includeIf "gitdir: ~/company/"]
+	path = ~/company/gitconfig
+
+
+00000000000000000000000000000000000000000000000000000000000000000000000
+000000000000000000000----ОСНОВЫ----000000000000000000000000000000000000
+00000000000000000000000000000000000000000000000000000000000000000000000
+
+----01 Создание репозитория, первый коммит----------------------------------------------------
+
+git init созд. репозиторий .git/
+есть раб. директория - индекс - репозиторий
+желательно в коммите первая строка с большой буквы без точки в конце и отделялась пустой строкой
+
+
+----02 Git и права на файлы-------------------------------------------------------------------------------------
+
+create mode 100644  index.html
+100-Файл
+644 - права на файл - исполнимый для текущего пользователя или нет 644 нет 755 да
+git config core.fileMode false
+git update-index --chmod=+x index.html ставит исполнимость напрямую в индексе в обход ф.с.
+git add --chmod=+x index.html  Если ф. еще не было в индексе
+
+---03 Git show, автор и коммиттер--------------------------------------------------------------------
+
+git show hash
+git show   покажет текущий коммит
+git show --pretty=fuller
+Автор и комиттер разные
+git commit --author='Dyadya Vasya <vas@vas.ru>'  --date='...'
+
+----04 Добавление файлов и директорий, git status-------------------------------------------------------
+
+пустые директории гит не добавляет
+туда можно положить пустой ф .gitkeep
+git add . добавит все новое
+если добавилось что-то не то, можно убрать:
+git reset HEAD .idea
+ls -a покажет содержимое текущей директории
+даже если что-то в гитигноре, мы можем добавить это в индекс:
+git add --force .idea/project.html == git add -f .idea/project.html
+и впредь изменения в этом ф. б. отслежив.
+git commit -m позв. указать сообщение без редактора
+
+----05 Хороший коммит-----------------------------------------------------------------------------------------------
+
+коммиты д.б. атомарными, консистентными, ничего не ломать
+функциональность: что сделали
+характер(компонент): что сделали
+
+
+----06 Зачем нужен индекс?----------------------------------------------------------------------------------------
+
+чтобы разделять изменения по разным коммитам, и не нарушать принцип атомарности
+
+git add -p index.html  тогда гит для каждого фрагмента в ф. предложит нам решить, добав
+-лять его в индекс или нет
+
+----07 Коммиты без git add------------------------------------------------------------------------------------------
+
+git commit --all == git commit -a
+git commit -a -m "oloolo" == git commit -am "ololo"
+-a игнорирует ф. кот. не отслеживаются гитом
+если у нас что-то сделано, что-то в индексе, что-то не в индексе, 
+но нам нужно срочно изменить и закоммитить другой ф.
+git commit -m 'Ignore logs' .gitignore  доб. в индекс и закоммитит остальные оставит, но только
+если гитигнор уже отслеживается
+если хочется все добавл. в индекс и коммитить даже новое:
+git config --global alias.commitall '!git add .;git commit' доб. все из текущей дир.
+git commitall -m '...'
+git config --global alias.commitall '!git add -A;git commit' добавит все из дир. проекта
+
+
+---08 Удаление и переименование файлов-------------------------------------------------------------------------
+.gitignore с .idea эта настройка д.б. глобальной на компе разработчика
+git config --global core.excludesFile ~/.gitignore
+удалили .gitignore
+git add .gitignore
+git commit -m Cleanup - можно без кавычек, если одно слово
+
+git rm ... удалит один или несколько ф И добавит изм. в индекс
+git rm -r src удалит директорию
+git rm -r --cached src   удалит из индекса но оставит в рабочем каталоге
+так делают, чтобы оставить ф. в раб. дир, но не отслеж в гит, кот. добавили туда по ошибке
+
+--cached операция с индексом вместо раб. дир.
+если у меня есть изменения в файле index.html, которые еще не не сохранены в репозитории
+git rm index.html  приведет к ошибке если надо
+git rm -f index.html  
+c (.) зрение гит - это удаление старого и созд. нового
+если добавить "удаленный" и "созданный" в индекс
+гит поймет что было переименование
+git mv hello.html index.html  - переименует ф и добавит это в индекс
+
+
+
+00000000000000000000000000000000000000000000000000000000000000000000000
+000000000000000000000000----ВЕТКИ----000000000000000000000000000000000000
+00000000000000000000000000000000000000000000000000000000000000000000000
+
+----01 Введение----------------------------------------------------------------------------------------------
+
+новую ф. мы реализуем в новой ветке - это тематические ветки
+ для нового релиза новая ветка -релиз-ветки  если что-то меняется в мастере - ошибка исправляется, м. сделать чери
+пикинг
+сочетание тематических и релизных веток называется git-flow
+
+
+----02 Создание и переключение-------------------------------------------------------------------------
+
+технически ветка - это спец. ссылка на коммит
+ее можно посмотреть .git/refs/heads/ но здесь их можно и не найти
+для просмотра веток используется 
+git branch 
+или git branch -v ветка и инфо о коммите, на кот. она указ. 
+.git/HEAD там HEAD
+коммит. на кот указ ветка наз ее вершиной
+git branch feature создали новую ветку, новую ссылку на наш коммит
+git checkout feature
+git checkout -b feature создали ветку и перелкючились
+технически ветка это ссылка на комит, 
+но принадлежащ. ветке наз все коммиты кот нах по цепочке родителей на пути от вершины вниз 
+
+
+----03 Команда checkout при незакоммиченных изменениях------------------------------
+
+git checkout -f master   если не нужны сделанные изменения
+git checkout --force HEAD
+git checkout -f  -просто отмена всего незакоммиченного
+git stash спрятать (сохранить на потом)
+git stach pop (достать их стэш) - можно на другой ветке
+Если мы на новой ветке не меняли файл со старой ветки, а потом
+начали что-то менять и не закоммитили. 
+то можно переключиться на старую, ошибки не будет, файл в раб. дир. и в индексе останется измененным
+
+
+----04 Создание новой ветки из последних коммитов, передвижение веток-----------
+если мы что-то поделали и поняли что сделали все не там
+git branch fix создали новую ветку для сделанных изменений( она на хэд)
+git checkout fix ушли с ветки перед тем как ее менять
+git branch -f master hash  == git branch --force master hash - мастера двигаем назад, откуда хотим чтоб отходила новая ветка
+без форс б. ругаться что ветка уже есть
+git branch -f master имяветки  пусть мастер указывает туда же куда и имяветки (мало ли, надо нам)
+git checkout -B master hash  если такая ветка уже есть при -B он ее передвинет на hash
+
+
+----05 Состояние отделённой HEAD-----------------------------------------------------------------
+
+git checkout hash
+коммиты из состояния detached HEAD не участвуют ни в 1 из ветвей разработки
+если мы забыли что мы в этом состоянии и сделали коммит, м. использовать черипик
+git switch -c <new-branch-name>   | --новое - в скринкасте нет!
+Or undo this operation with:           |
+  git switch -                                      |
+git cherry-pick hash - подробности позже
+
+
+----06 Восстановление предыдущих версий файлов-----------------------------------------------------
+
+git checkout master index.html
+git checkout hash index.html  достаем в раб. дир. ф. на момент указанного коммита
+и добавляется в индекс
+git reset index.html сбросится индекс
+если мы всего наменяли и один ф. хотим вернутьт
+git checkout HEAD index.html передает из хэд в индекс и в раб. дир. а остальные оставляет измененными
+git checkout index.html -передает из индекса в раб. дир
+git checkout -- master - перекл на директорию мастер (если она есть!)
+git checkout HEAD --master 
+
+
+----07 Просмотр истории и старых версий, ~ и :/-----------------------------------------------------------
+
+git log
+git log --oneline
+git log master --oneline
+git show hash
+git show HEAD~
+git show HEAD~~
+git show HEAD~~ --quiet
+git show HEAD~3
+git show @~
+в Power Shell git show '@~'
+git show master~
+git show @~4:index.html
+git show fix:index.html (fix - название ветки!)
+git show :index.html -смотрим, что в индексе
+git show :/sayBye (ищем по названию коммита или части) -можно несколько слов в кавычках или рег. выр.
+
+----08 Слияние перемоткой--------------------------------------------------------------------------------------------
+
+git checkout master
+git merge fix
+CAT .git/ORIG_HEAD  - перед merge запис. старое полож. ветки
+git branch -f master ORIG_HEAD
+git checkout -B master fix
+
+
+----09 Удаление веток-----------------------------------------------------------------------------------------------------
+
+git branch -d fix - только слитую ветку (fix - это ветка)
+git branch -D feature - Удалит не слитую ветку
+git branch feature hash - создает обратно
+
+
+----10 Лог ссылок: reflog--------------------------------------------------------------------------------------------------
+
+cat .git/logs/HEAD
+git reflog   == git log --online -g
+git reflog feature (feature - это ветка)
+git branch feature HEAD@{6} (в powerShell 'HEAD@{6}')
+git reflog --date
+git reflog --date=iso
+git branch feature HEAD@{2020-04-09 22:25:59 +0300}
+gc.reflogExpire = "90 days ago"
+gc.reflogExpireUnreachable = "30 days ago"
+git checkout @{-1} - предыдущая ветка, с кот. был чекаут на текущую
+git checkout @{-5}
+git checkout - предыдущая
+
+----11 Сборка мусора --------------------------------------------------------------------------------------------------------
+
+git идет от каждой ветки, тега, HEAD  по цепочке родителей до конца. + reflogs - остаются в базе
+автоматически запускается при выполнении команды слияния и при загрузке данных с сервера
+или вручную 
+git gc
+gc - garbage collection
+сборка мусора + внутр. оптимизации
+gc.pruneExpire = "2 weeks ago"  prune - подрезать, обрезать, подстричь
+git fsck unreachable - выводит список недостижимых коммитов
+git filter-branch - позв. заменить коммиты ветки на нов. получ. из старых путем фильтрации
+но удобнее сторонняя утилита BFG
+git reflog expire --expire=now --all  - очищает reflog
+git show d645 все еще покажет удаленный коммит
+git show d645 --quiet
+git gc --prune=now - чистит все коммиты моложе чем сейчас
+git merge --no-ff --no-edit feature
+git show --first-parent
+
+
+
+
+00000000---------------ТЕГИ----------------0000000000000000000000000000000000000000000000000
+
+
+----01 Теги, основные действия с тегами ----------------------------------------------------------------------------
+
+git tag v1.0.0 5f91
+git show v1.0.0 --quiet
+тэг видно в git log
+git tag - список тэгов
+git tag --contains hash - Какие релизы содержат этот коммит
+git tag -n - какие соообщения на помеченном коммите
+git tag -n4 - 4 строки из сообщения
+git log --oneline v1.0.0 - история разработки от этого тэга (к началу)
+git tag -n -l 'v1.1*' начинаются на v1.1
+git tag -d v1.o.o v1.1.0    удалит теги
+git tag -a -m 'Version 1.0.0' v.1.0.0 f94f тег с аннотацией
+
+
+----02 Использование тегов для экспорта с describe, archive -----------------------------------------------------
+
+git describe hash - получить тэг 
+git describe опишет HEAD
+git archive -o /tmp/v1.1.
+
+
+00000000----------RESET-------------0000000000000000000000000000000000000000000000000000000000
+
+----01 Жесткий reset, отмена коммита-----------------------------------------------------------------------------------------
+
+git reset @~   родитель текущ. коммита  
+git reset --hard @~  как будто последнего коммита никогда не было
+cat .git/ORIG_HEAD
+git reset --hard ORIG_HEAD
+накуролесили с файлом -> добавили в индекс -> хотим вернуться к последнему коммиту:
+git reset --hard == git reset --hard HEAD
+
+----02 Мягкий reset, замена и объединение коммитов--------------------------------------------------------------------
+
+git reset --soft  не трогает рабочую директорию и индекс
+git commit -c ORIG_HEAD c открытием редактора и именем последнего коммита
+git commit -C ORIG_HEAD то же без откр.ред. автор и дата те же
+git show --quiet --pretty=fuller покажет дату создания и дату коммита
+git commit -C ORIG_HEAD --reset-authot
+
+
+----03 Правка последнего коммита: commit --amend----------------------------------------------------------------------
+
+git commit --amend  == git reset --soft @~; git commit -C ORIG_HEAD
+git commit --amend --reset-authot
+git commit --amend --no-edit отменяет вызов редактора
+git commit --amend -m 'new commit name'
+git reset --soft @~2
+git commit -m 'sayHi and sayBye'  теперь изменения из 2 последних коммитов стали в одном
+поменять коммит посередине ветки не трогая коммит за ним, нельзя:
+переписыванием истории занимается git rebase
+
+----04 Смешаный reset, отмена индексации -----------------------------------------------------------------------------------
+
+git reset --mixed перемещ ветку сбрас индекс но не трог раб директор режим ресета по умолчанию так что:
+git reset == git reset --mixed
+git reset HEAD очистка индекса == git reset
+смешанный ресет позволяет указ. конкр.. пути, т.е. сбросить из индекса один файл:
+git reset index.html
+git reset hash index.html - в индекс попадает версия файла из указанного коммита но лучше:
+git checkout hash index.html  - т.к. помещает ф. не только в индекс но и в рабочую директорию
+
+----05 Жесткий reset с сохранением изменений: --keep---------------------------------------------------------------------------
+
+git reset --keep @~ если статус чистый, тоже что git reset --hard @~
+git diff --name-only @~ какие файлы менялись в последнем коммите
+git reset --keep @~ если есть измененные не проинд. файлы, постарается их сохранить или выдаст error
+
+----06 Особый reset для отмены слияний: --merge-------------------------------------------------------------
+
+git reset --merge
+если в раб. дир. изменения непроиндекс - сохраняются
+проиндексированные все отмeняются
+
+---07  Виды reset – таблица в документации ---------------------------------------------------------------
+
+git help reset
+
+
+000000000---ОЧИСТКА ПРОЕКТА ОТ ИЗМЕНЕНИЙ---000000000000000000000000000000000
+
+gti reset --hard и git checkout -f НИЧЕГО не делают с файлами, кот. не отслеж. git
+git clean
+git clean -d удаляет не только файлы но и директории
+git clean -dx удаляет в т.ч. ф которые в .gitignore
+git clean -f - это что мы уверены что все удаляем иначе не работает
+
+
+0000000000000000---ПРОСМОТР---0000000000000000000000000000000000000000000000000000
+
+----01 Сравнение коммитов, веток и не только: git diff------------------------------------------------------------
+
+git diff hash hash
+git diff master feature  == git diff master..feature
+от меня: 
+less pager по умолчанию для git
+git diff --no-pager
+В less - просмотреть вниз f
+в начало g
+git diff master...feature - сравн. что именно было сделано в feature с момента ее отхода от master
+git diff feature...master - что сделано в мастере с мом. расх. с фичер
+git diff hash - сравн. сост. раб. директории с репоз. на мом. этого коммита
+git diff HEAD - сравн. что сделали в раб. дир. с последним коммитом (раб. дир. + индекс)
+git diff то же, если ничего нет в индексе, а если мы туда добавили изменения ничего не выведет (только раб. дир. сравн.)
+git diff не отслеживают новые непроиндексир. файлы, сравн. раб. директорию с индексом
+git diff --cached или git diff --staged сравнивает с указанным коммитом то что в индексе
+если не указ. коммит - то с HEAD
+git commit -v коммитит с открытием diff в редакторе все что после >8 удалится
+если такое надо всегда, можно вкл. в конфиг
+git config --global commit.verbose true
+git diff index.html
+git diff HEAD index.html
+git diff master feature index.html
+git diff master feature index.html script.js
+git diff --name-only master feature
+иногда перед путями ставят -- (если напр. есть папка master или HEAD)
+git diff -- master (master - Путь)
+git diff master:one.html feature:two.html
+git diff --no-index path1 path2 - сравн. любые 2 ф. на диске независимо есть ли репозиторий
+
+----02 Сравнение по словам, драйвер diff----------------------------------------------------------------------------------------
+
+git diff --word-diff
+git diff --color-words == git diff --world-diff=color
+чт. поним не просто любые симв. мду пробелами м. задать в .gitattributes
+*.html diff=html
+html - это драйвер встроенный в Git 
+*.css diff=css
+рассказ. про созд. своих драйверов
+[diff  "markdown"]
+	# POSIX extended
+	xfuncname = "^#+[[:space:]]+.+$"
+*.md diff=markdown
+wordRegex ="\\*+|[^[:space:]*]+"
+
+м. передать рег. выр. через --word-diff-regex
+встроенн. драйвера м. посмотреть в исходниках git в userdiff.c
+
+----03Сравнение разных форматов, кастомизация diff----------------------------------------------------------------------
+
+бинарные файлы
+файл and Файл differ
+в .gitconfig 
+[diff "image"]
+	textconv = identify утилита кот. выводит размер картинок
+в .gitattributes 
+*.png diff=image
+git config diff.image.textconv "identify -format '%wx%h %b\n'"
+[diff "image"]
+	textconv = identify -format '%wx%h %b\\n
+	cachetextconv = true
+	binary = true
+[diff "binary"]
+	binary = true
+в .gitattributes 
+*.svg diff=binary
+binary  == -text -merge -diff
+[diff "icdiff"]
+	command = icdiff сторонняя утилита - почитать отдельно!!
+*.html diff=icdiff
+git difftool
+
+----04 Вывод истории: git log, форматирование коммитов--------------------------------------------------------------------
+
+git log выводит коммиты достижимые из HEAD
+git log --pretty=oneline
+git log --pretty=oneline --abbrev-commit == git log --oneline
+git commit --author=... --date=... (чтобы коммитер отлич. от автора)
+git использует для форматирования дат ф-ю strftime
+git config --global pretty.my format: ".............."
+git config --global format.pretty my
+git config --global log.date format-local: "%F %R"
+git log --patch == git log -p  выводит лог с diff-ами
+format: '%C(yellow)%h %C(dim green)%ad %C(reset)| %C(cyan)%s%d %C(#667788)[%an]'
+git config --global --replace-all  pretty.my format:'%C(yellow)%h %C( green)%ad %C(reset)| %C(white)%s%C(magenta)%d %C(blue)[%an]'  -у меня так заработало
+git config --global log.date format-local:'%Y-%m-%d %H:%M:%S' ... и так
+
+----05 Диапазоны коммитов для git log и не только----------------------------------------------------------------------------
+
+git log hash выведет коммиты достижимые из hash
+git log master feature и оттуда и оттуда
+git log master feature --graph
+git log --all --graph
+git gui
+git log feature ^master коммиты из feature кроме достижимых из master == git log master..feature
+git log HEAD..heature 
+git log ..feature
+git log feature..master (если HEAD на master) == git log feature..
+в вышеперечисл. отсутствует пограничный коммит
+git log feature,, --boundary - добавит пограничн. коммит
+git log master...feature симметрическая разность коммиты кот. достижимы из одного другого но не из обоих одновременно
+git help revisions
+в diff (.) означают одно, а в остальных командах другое
+
+----06 Вывод git log коммитов, меняющих нужный файл-----------------------------------------------------------------------
+
+git log index.html
+git log -p index.html - с diff-ами
+git log --follow index.html - если в процессе разраб. ф. был переименован, то лог его все равно найдет
+git log feature..master index.html
+git log feature..master -- index.html - если имя ф. совпад. с им. ветки
+
+
+----07 Поиск в истории, фильтры для git log----------------------------------------------------------------------------------------
+
+git log --grep run поиск всех коммитов со словом run в описании c учетом текущей ветки
+git log --grep added --grep function коммиты со словом added ИЛИ словом function
+git log --grep added --grep function --all-match И
+почитать Дж.Фридл "Регулярные выражения"
+по умолч. гит использ. очень старый стандарт рег. выр.
+git log --grep 'say(Hi|Bye)' -P флаг включает перл-совместимые р.в.
+git config --global grep.patternType perl
+git log -F отключает рег. выраж.
+git log --grep sayhi -i   отключает учет регистра
+git log -G регулярка - выведет все коммиты в diff-ами где она есть
+git log -GsayHi -p
+git log -L 
+git log -L 3,6:index.html  с 3 по 6 стоки
+git log -L '/<head>/','/<\/head>/':index.html в head
+git log -L :sayHi:script.js  ищет изменения ф-ции этот способ не идеален!
+git log --author=ase444ka
+git log --committer=ase444ka
+git log --before '3 months ago'
+git log --before '2020-04-12'
+git log --after 
+
+
+----08 Кто написал эту строку? git blame--------------------------------------------------------------------------------------------------
+
+git blame index.html
+git blame index.html --date=short -L 5,8
+
+
+000000000000000-----СЛИЯНИЕ---000000000000000000000000000000000000000000000000000000000000000000
+
+----01 Истинное слияние и разрешение конфликтов в git merge-------------------------------------------------------------------
+
+git merge-base master feature   находит последний коммит то расхождения
+git show hash:index.html покажет файл
+base ours-master theirs-feature
+base + our + their = merge
+cat .git/MERGE_HEAD Указатель на ветку, С КОТОРОЙ слияние
+git diff -U0 hash master  index.html покажет по 0 строчек вокруг изменений, по умолчанию 3
+git checkout --ours index.html
+git checkout --theis index.html
+git checkout merge index.html
+git reset --hard  вновь окажемся на чистом статусе в HEAD
+git reset --merge == git merge --abort оставляет незакоммиченные ф. кот. не участвовали в слиянии
+слияние внесет изменения в раб. директорию и индекс только для тех ф. кот. в др. ветке изменены
+т.о. на  изменения кот. слияние не затронуло, git reset --merge не повлияет
+git checkout --conflict=diff3 --merge index.html
+git config --global merge.conflictStyle diff3
+git show :1:index.html посм. общего предка
+то же 2 наша
+то же 3 их
+в индексе при конфликте находятся все 3 версии
+пока так, многие команды гит, в т.к. коммит не работают
+после исправлений, git add index.html
+для завершения слияния git commit == git merge --continue
+
+
+----02 Коммит слияния, дальнейшие слияния------------------------------------------------------------------------------------------------
+
+git show
+git show hash
+combined condensed diff смотрим, как разрешились конфликты
+ +  изменения в theirs (из ours)
++  из theirs
+++ ни там ни там
+git show --first-parent какие изменения наша ф-я привнесла в ветку мастер
+git show -m показывают изменения всех участников слияния
+git diff HEAD^ -отличие от первого родителя
+git diff HEAD^2  -//- от второго ..
+.. HEAD^^ родитель первого родителя
+HEAD^2^ родитель второго родителя
+^число когда несколько родителей
+~число - к прародителям
+git branch --merged показывает ветки, объединенные с текущей
+git branch --no-merged показывает не объединенные
+допустим изменили снова слитую с мастером ветку (без конфликтов)
+git merge feature -m  'название коммита'   
+git merge feature --no-edit  у меня без --no-edit Слилось без редактора, написало "Merge made by the 'recursive' strategy."
+git merge feature --log=5 не более 5, по умолч. не более 20  у меня не получилось, сделался Fast-forward
+git log master --oneline покажет все коммиты в т.ч. слитых веток
+git log master --oneline --first-parent  лог если видит коммит слияния идет дальше только по первому родителю
+чтобы было ровно, надо сливать всегда из мастера!!
+
+
+----03 Отмена слияния------------------------------------------------------------------------------------------------------------------------
+git reset --hard @~
+хоть и два родителя, сам коммит только в ветке в которую слили
+ если отменили коммит, но хотим вернуть, это можно, найти отмененный коммит м. в reflog
+git reflog -4
+git reset --hard @{1} (например)
+
+
+----04 Семантические конфликты и их разрешение---------------------------------------------------------------------------------
+
+изменения конфликтуют по смыслу, а не по месту в файле
+если нечаянно смерджили:
+git reset --hard @~ отмена
+git merge work --no-commit и окажемся в состоянии преравнного слияния
+cat ./git/MERGE_HEAD  файл с hash сливаемого коммита
+git merge --continue == git commit
+
+
+----05 Слияние с сохранением веток, запрет перемотки --no-ff--------------------------------------------------------------------
+
+git merge feature --no-ff
+git show --first-parent
+git.config merge.ff false
+git.config branch.master.mergeoptions '--no-ff'
+если такое настроено, можно включить явно:
+git merge --ff feature
+
+
+----06 Слияние без связи с источником: merge --squash-----------------------------------------------------------------------------
+
+Если у нас аддские эксперименты в ветке  fix и мы хотим одним коммитом заить ее результат в нашу ветку
+git merge --squash fix
+git diff --cashed
+git commit -m 'то и это'
+git branch -D fix  можно удалить ветку фикс
+
+если конфликт:
+git merge --squash feature
+Auto-merging index.html
+CONFLICT (content): Merge conflict in index.html
+
+отменим
+git merge --abort
+fatal: There is no merge to abort (MERGE_HEAD missing). не получится
+
+git reset --merge  так работает
+когда конфликт, в индекс помещаются оба изменения
+, не закоммитить пока не разреш. конфл:
+Unmerged paths:
+  (use "git restore --staged <file>..." to unstage)
+  (use "git add <file>..." to mark resolution)
+        both modified:   index.html
+
+конфликт также м. дать др. команды, например
+git stash pop
+
+
+----07 Слияние без конфликтов через драйвер union, свои драйверы----------------------------------------------------------------
+
+драйвер слияния задается в .gitattributes
+по умолчанию txt Ф задается д. text
+*.txt merge=text
+для бинарн. по умолч. binary
+*.jpg merge=binary
+есть еще union
+/NEWS.ms merge=union
+union просто вставляет все изменения в файл
+в union если в 1 ветке мы удалим какую-то стр. а в др. поменяем существующую, объед. версия вкл. в себя
+все строки, котор. есть хотя бы в 1м файле
+т.е. кот была удалена в одной из веток, останется
+при слиянии идут сначала наши строки, а потом вливаемые
+можно создать свой драйвер слияния
+свой др. слияния создается в конфиге
+[merge "po"]
+	name = Gettext merge driver
+	driver = git-merge-po.sh %O %A %B     путь к ф. из общ. предка, путь к нашей верс. ф., путь к в.ф. из слив. ветк.
+
+есть др. параметры, см. git help attributes
+когда драйвер создан, его надо назначить чз .gitattributes
+*.po merge=po
+
+
+---- 08 Стратегии слияния --------------------------------------------------------------------------------------------------------------------------------
+recursuve
+octopus
+ours
+resolve
+subtree
+
+recursive - ours - конфл. в нашу пользу, theirs - б. выбираться сливаемый вариант
+git merge -Xours <commit>
+git merge -Xtheirs <commit>
+renormalise - нормализует концы строк для всех участвующих ф.
+ignore-all-space - для работы с пробелами; четыре пробела и таб не конфликт
+если в одной ветке изменили чуть файл, а в др. переименовали и чуть изменили, конфл. не будет,
+если git видит один файл и другой новый, кот. отлич от нашего <=50%, он считает, что это переименованный наш
+-Xno-renames эту стратегию отменяет
+git merge -Xfind-renames=80 work
+subtree=path позволяет замерджить одну ветку в поддиректорию другой
+git merge -Xsubtree=plugin --allow-unrelated-histories plugin
+git subtree
+также для интеграции сторонних репозиториев есть
+git submodule - В директорию проекта помещается не ветка, а сторонний репозиторий целиком
+
+
+octopus исп-ся автоматич, когда треб. объединение более 2 веток 
+его основная область, большие проекты с изменениями в разных местах
+
+git merge -s ours <commit>
+говорит полностью игнорировать содержимое сливаемой ветки
+ 
+resolve очень старая и ненужная recursive полностью ее заменяет
+
+subtree т.ж. что subtree в рекурс. слиянии. но в нее нельзя передавать путь
+
+
+
+000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+000000000000--КОПИРОВАНИЕ КОММИТОВ--0000000000000000000000000000000000000000000000000000
+000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+
+---- 01 Копирование коммитов: cherry-pick----------------------------------------------------------------------------------------------
+
+git cherry-pick D
+берет diff указанного коммита и применяет его к текущей ветки, создавая новый коммит эти два коммита называют эквивалентными, т.к. они содерж. одинаковые изменения
+D D' - эквив. коммиты
+git cherry-pick -x   x добавляет в описание коммита строку с инфой, откуда он был скопирован
+git cherry-pick hash hash черипикинг нескольких коммитов (начинает с более раннего коммита)
+git cherry-pick master..feature  - или диапазона (все коммиты фичер, кот. нет в мастер)
+если ошибка слияния   
+git cherry-pick abort - отменит скопированные коммиты и вернет все как было до chp
+git cherry-pick continue продолжит
+git cherry-pick quit применит что применилось и дальше не пойдет
+git reflog --no-decorate -3
+git reset --hard HEAD@{2}
+git cherry-pick no-commit hash == git cherry-pick -n hash  внесет изменения в раб. дир. и индекс, мы сможем подредактировать что надо
+git diff --cached
+
+---- 02 Просмотр эквивалентных коммитов: cherry, cherry-mark---------------------------------------------------------------------
+
+можно обмениваться изменениями чз форумы, чаты, емейлы, используя команды 
+git patch
+git apply
+и др..
+git cherry master feature - покажет коммиты из f которым есть экв. в мастер
+- коммит, у которого есть копия в мастер
++ нет копии
+git cherry master feature -v    с описанием
+если указать только одну ветку, вторая равна HEAD
+git cherry feature - покаж. коммиты из HEAD кот. есть экв. в Feature
+но можно git log feature...master
+git log --cherry-pick feature...master удаляет эквив. коммиты из вывода
+git log --cherry-mark feature...master помечает э.к.
+git log --cherry-mark --oneline --left-right feature...master   знаком больше комм. из правой в. меньше из левой
+git log --cherry-mark --oneline --left-only feature...master  только из feature
+--right-only только из мастер
+git log --oneline --cherry  == git log --right-only --no-merges  (?)
+
+
+
+000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+000000000000--ПЕРЕМЕЩЕНИЕ КОММИТОВ--0000000000000000000000000000000000000000000000000000
+000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+
+---- 01 Перебазирование веток: rebase -------------------------------------------------------------------------------------------------
+
+находимся на feature
+git rebase master перебазирует feature на master
+Если посередине застрянет,
+git reset --hard не сработает, т.к. рипозиторий наход. в состоянии detached HEAD
+git rebase --abort
+git rebase --quit   не возвращает обратно HEAD
+git rebase --skip пропустит конфликтный коммит
+коммиты, которые изменения не дают, называют пустыми, и rebase их пропускает автоматически 
+Допустим, мы передумали
+вначале работы rebase создает ORIG_HEAD
+cat .git/ORIG_HEAD
+так что как правило все вернет
+git reset --hard ORIG_HEAD
+Если вдруг удалилось м. посмотреть reflog Именно ветки
+git reflog feature -1
+git show --quiet feature@{1}
+git rebase master feature  означает, что нужно перенести feature на master
+
+---- 02 Rebase против merge: сравнение подходов-------------------------------------------------------------------------------------
+
+главный плюс rebase - упрощение истории разработки
+sourcetree - графич. утилита для работы с git
+минус - коммит в ребэйс может оказаться "сломанным": напр. вызвал переименованную в мастере функцию
+еще минус, когда два разработчика работают над одной и т.ж. веткой
+git rebase -x '...' master позволяет запускать команду в кавычках после каждого коммита (обычно это тесты)
+
+---- 03 Тесты при rebase, rebase -x--------------------------------------------------------------------------------------------------------------
+
+git rebase -x 'node feature.js' master
+исправили
+git add feature.js
+git commit --amend --no-edit
+git rebase --continue
+
+
+--- 04 Перенос части ветки, rebase --onto----------------------------------------------------------------------------------------------------
+
+чтобы указать с какого момента нужно копировать
+git rebase --onto master feature  надо перебаз. на мастер текущ ветку (fix) начиная с указателя на feature ==
+git rebase --onto master feature fix
+
+rebase и ch-p иногда заменяют др. друга
+git checkout feature
+git cherry-pick master~2..master
+git branch -f master master~2
+
+
+----05 Перебазирование слияний, rebase -p--------------------------------------------------------------------------------------------------
+
+git rebase --preserve-merges master == git rebase -p master
+сохраняет коммиты слияния (по умолчанию - нет)
+при такой опции, коммит слияния копируется, а также коммиты из сторонней ветки (до слияния) НЕ КОПИРУЮТСЯ!
+
+, но к сожалению, проблема остается, если в комм. слияния разрешали конфликт, то изменения пропадут (середина 2018г сейчас- проверить!)
+поэтому рекоменд. избегать перебазирования веток со слияниями
+
+
+----06 Интерактивное перебазирование, rebase -i--------------------------------------------------------------------------------------
+
+git rebase --edit-todo Если сделали пару коммитов посередине и надо посмотреть .что еще надо сделать
+git rebase --continue
+иногда интеракт перебаз. делают только для улучшения истории, тогда надо перебаз. ветку на саму себя
+git rebase -i @~3
+ребейз полностью копирует всю ветку, т.к. менять коммиты нельзя
+но если в редакторе оставить первые коммиты Как pick, 
+будут копир. коммиты с момента первого кот. не пик
+если очень хочется перебазировать именно все, можно использовать флаг
+--no-ff
+
+
+----07 Коммиты-заплатки: rebase autosquash-------------------------------------------------------------------------------------------
+
+git commit -a --fixup=@~ 
+git commit -a --fixup=hash
+такой коммит в начало имени коммита ставит "fixup! название редактируемого коммита"
+но позже если запусить интерактивное перебазирование
+git rebase -i --autosquash
+или вкл. ее глобально по умолчанию
+git config --global rebase.autoSquash true
+по при ребайз автоматически заплатка поставится после нужного коммита с фиксапом 
+
+
+000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+00000000000000000000000000000000--RERERE--0000000000000000000000000000000000000000000000000000
+000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+
+---- 01 Авторазрешение повторных конфликтов------------------------------------------------------------------------------------
+REuse REcorded REsolution
+git config rerere.enabled  true
+при конфликте появится надпись
+Recorded preimage for 'index.html'  - означает. что ререре запомнил состояние файла на мом. конфликта
+разреш. конфл
+git add index.html
+git commit --no-edit
+И появл. Recorded resolution for 'index.html'.
+git config rerere.autoUpdate true тогда rerere будет добавлять результат исправления конфл. в индекс
+если запомненное решение конфликта нам не подходит, можно получить файл с конфликтом:
+git checkout --merge index.html
+git rerere forget index.html забыли старое разрешение конфликта
+сделали по-другому 
+git commit -a --no-edit
+.git/rr-cache/ тут все данные по конфл. rerere
+можно удалить махом все данные по разреш. конфл.
+rm -rf .git/rr-cache
+также это удаляет сборщик мусора, если они старше чем в конфиге rerere.rerereResolved (60 дней)
+rerere.rerereUnresolved (15 дней)
+если Rerere надоел
+git config rerere.enabled false либо
+git config --unset rerere.enabled но тогда еще нужно убить директорию .git/rr-cache
+rerere-train.sh скрипт обучения rerere обычно встроен в git
+если включили уже после повторения конфликта можно обучить:
+путь к rerere-train.sh --all
+
+
+000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+00000000000000000000000--ОБРАЩЕНИЕ КОММИТОВ--0000000000000000000000000000000000000000000
+000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+
+----01 Обратные коммиты, revert---------------------------------------------------------------------------------------------------------
+
+создает противоположный коммит
+можно указать диапазон
+git revert A..D создаст коммиты B^ C^ D^
+git revert поддерживает практически все флаги команды cherry-pick
+
+
+----02 Отмена слияния через revert------------------------------------------------------------------------------------------------------
+
+git revert -m 1 @ 
+смотрим, чего наотменяли
+git diff @~
+если потом пофиксили баги в фичер и снова хотим слить с мастер,  
+в мастере лучше произвести отмену отмены слияния перед этим
+иначе будут конфликты, гит не понимает что отмена вообще была
+
+
+----03 Повторное слияние с rebase--------------------------------------------------------------------------------------------------------
+
+git rebase --onto master f94fdd feature  (c момента расхождения до первого слияния)
+git checkout master
+git merge --no-ff --no-edit feature
+т.о. не потребовалось дополнительных финтов ушами типа отмены отмены 
+но это удобно только если это наша ветка без проблем с синхронизацией с коллегами
+
+
+второй вариант: чтобы убрать переплетения с мастер, перебазируем фичу рядом с собой с момента расхождения
+git checkout feature
+git rebase f94fdd --no-ff
+
+
+000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+0000000000000000000000000000000000000--ДАТЫ В GIT--0000000000000000000000000000000000000000000
+000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+
+---- 01 Передача даты в гит, форматы дат ---------------------------------------------------------------------------------------------------
+
+30.01.2018
+01/30/2018
+2018-01-30
+2018.01.30
+можно в виде юникс-таймстампа
+коммиты до второго января берутся до 2 января времени которое сейчас
+если брать только дату, время укажется текущее
+если только время, дата возьмется текущая 
+врем. зона берется текущая
+можно указать время как 4pm
+3 weeks = 3 weeks ago = 3.weeks.ago
+3 day = 3 days = 3 days ago и т.д.
+git log --before = '2 day'
+git log --before = 3.day так можно без кавычек, удобно
+можно
+1 year 2 months 5 minutes 1 second
+one year two months (умеет считать от нуля zero до десяти)
+yesterday
+midnight
+noon
+tea пять вечера
+last friday
+never 
+now
+git config --global gc.reflogExpire=never рефлог не будет чиститься никогда
+git reflog expire --expire=now --all очистит все рефлоги
+git reflog expire --expire=all --all
+
+----02 Форматирование для вывода дат------------------------------------------------------------------------------------------------------
+
+git log --date=
+default
+rfc
+iso
+iso-strict
+short
+unix
+raw
+relative
+format: '%F$T' см. strftime
+ко всем форматам можно применить суфф. -local чтобы переводить даты в локальную таймзону
+(если мы разрабатываем в команде с иностранцами)
+git log --date=iso-local
+git log --date=format-local: '%F %T'
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+</body>
+</html>
