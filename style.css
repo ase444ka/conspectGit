@@ -15,3 +15,14 @@ body {
 pre {
     white-space: pre-wrap;
 }
+div {
+    background-color: palegreen;
+    padding: 7px;
+    margin: 10px auto;
+    font-size: 20px;
+    font-weight: bold;
+    font-style: italic;
+    color: midnightblue;
+    width: 50%;
+
+}
