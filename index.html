@@ -6,6 +6,7 @@
     <title>Конспект скринкаста по GIT</title>
 </head>
 <body>
+    <pre>
     <h1>Конфигурация</h1>
     <h2>01 Основная конфигурация</h2>
     <p>
@@ -150,7 +151,7 @@ false ничего не делает с файлами
     #anywhere/migrate-2015, migrate-20170101.db, NOT migrate-2018...
     
     *.py?
-    #anywhere/*.py<any char>, *.pyc OR *pyd NOT *.py
+    #anywhere/*.py&lt;any char&gt;, *.pyc OR *pyd NOT *.py
     
     #slash at the end means a folder
     build/
@@ -749,123 +750,123 @@ git использует для форматирования дат ф-ю strfti
 
 <h2>01 Истинное слияние и разрешение конфликтов в git merge</h2>
 
-git merge-base master feature   находит последний коммит то расхождения
-git show hash:index.html покажет файл
-base ours-master theirs-feature
+<strong>git merge-base master feature </strong>  находит последний коммит то расхождения
+<strong>git show hash:index.html</strong> покажет файл
+<em>base ours-master theirs-feature</em>
 base + our + their = merge
-cat .git/MERGE_HEAD Указатель на ветку, С КОТОРОЙ слияние
-git diff -U0 hash master  index.html покажет по 0 строчек вокруг изменений, по умолчанию 3
-git checkout --ours index.html
-git checkout --theis index.html
-git checkout merge index.html
-git reset --hard  вновь окажемся на чистом статусе в HEAD
-git reset --merge == git merge --abort оставляет незакоммиченные ф. кот. не участвовали в слиянии
+<strong>cat .git/MERGE_HEAD</strong> Указатель на ветку, С КОТОРОЙ слияние
+<strong>git diff -U0 hash master  index.html</strong> покажет по 0 строчек вокруг изменений, по умолчанию 3
+<strong>git checkout --ours index.html</strong>
+<strong>git checkout --theis index.html</strong>
+<strong>git checkout merge index.html</strong>
+<strong>git reset --hard </strong> вновь окажемся на чистом статусе в HEAD
+<strong>git reset --merge</strong> == <strong>git merge --abort</strong> оставляет незакоммиченные ф. кот. не участвовали в слиянии
 слияние внесет изменения в раб. директорию и индекс только для тех ф. кот. в др. ветке изменены
 т.о. на  изменения кот. слияние не затронуло, git reset --merge не повлияет
-git checkout --conflict=diff3 --merge index.html
-git config --global merge.conflictStyle diff3
-git show :1:index.html посм. общего предка
-то же 2 наша
-то же 3 их
+<strong>git checkout --conflict=diff3 --merge index.html</strong>
+<strong>git config --global merge.conflictStyle diff3</strong>
+<strong>git show :1:index.html</strong> посм. общего предка
+<strong>то же 2</strong> наша
+<strong>то же 3</strong> их
 в индексе при конфликте находятся все 3 версии
 пока так, многие команды гит, в т.к. коммит не работают
-после исправлений, git add index.html
-для завершения слияния git commit == git merge --continue
+после исправлений, <strong>git add index.html</strong>
+для завершения слияния <strong>git commit</strong> == <strong>git merge --continue</strong>
 
 
 <h2>02 Коммит слияния, дальнейшие слияния</h2>
 
-git show
-git show hash
-combined condensed diff смотрим, как разрешились конфликты
- +  изменения в theirs (из ours)
-+  из theirs
-++ ни там ни там
-git show --first-parent какие изменения наша ф-я привнесла в ветку мастер
-git show -m показывают изменения всех участников слияния
-git diff HEAD^ -отличие от первого родителя
-git diff HEAD^2  -//- от второго ..
-.. HEAD^^ родитель первого родителя
-HEAD^2^ родитель второго родителя
-^число когда несколько родителей
-~число - к прародителям
-git branch --merged показывает ветки, объединенные с текущей
-git branch --no-merged показывает не объединенные
+<strong>git show</strong>
+<strong>git show hash</strong>
+<strong>combined condensed diff смотрим, как разрешились конфликты</strong>
+<strong> +</strong>  изменения в theirs (из ours)
+<strong>+  </strong>из theirs
+<strong>++ </strong>ни там ни там
+<strong>git show --first-parent</strong> какие изменения наша ф-я привнесла в ветку мастер
+<strong>git show -m </strong>показывают изменения всех участников слияния
+<strong>git diff HEAD^</strong> -отличие от первого родителя
+<strong>git diff HEAD^2 </strong> -//- от второго ..
+<strong>.. HEAD^^</strong> родитель первого родителя
+<strong>HEAD^2^ </strong>родитель второго родителя
+<strong>^число</strong> когда несколько родителей
+<strong>~число</strong> - к прародителям
+<strong>git branch --merged</strong> показывает ветки, объединенные с текущей
+<strong>git branch --no-merged </strong>показывает не объединенные
 допустим изменили снова слитую с мастером ветку (без конфликтов)
-git merge feature -m  'название коммита'   
-git merge feature --no-edit  у меня без --no-edit Слилось без редактора, написало "Merge made by the 'recursive' strategy."
-git merge feature --log=5 не более 5, по умолч. не более 20  у меня не получилось, сделался Fast-forward
-git log master --oneline покажет все коммиты в т.ч. слитых веток
-git log master --oneline --first-parent  лог если видит коммит слияния идет дальше только по первому родителю
+<strong>git merge feature -m  'название коммита'  </strong> 
+<strong>git merge feature --no-edit</strong>  у меня без --no-edit Слилось без редактора, написало "Merge made by the 'recursive' strategy."
+<strong>git merge feature --log=5 </strong>не более 5, по умолч. не более 20  у меня не получилось, сделался Fast-forward
+<strong>git log master --oneline</strong> покажет все коммиты в т.ч. слитых веток
+<strong>git log master --oneline --first-parent</strong>  лог если видит коммит слияния идет дальше только по первому родителю
 чтобы было ровно, надо сливать всегда из мастера!!
 
 
 <h2>03 Отмена слияния</h2>
-git reset --hard @~
+<strong>git reset --hard @~</strong>
 хоть и два родителя, сам коммит только в ветке в которую слили
  если отменили коммит, но хотим вернуть, это можно, найти отмененный коммит м. в reflog
-git reflog -4
-git reset --hard @{1} (например)
+<strong>git reflog -4</strong>
+<strong>git reset --hard @{1}</strong> (например)
 
 
 <h2>04 Семантические конфликты и их разрешение</h2>
 
 изменения конфликтуют по смыслу, а не по месту в файле
 если нечаянно смерджили:
-git reset --hard @~ отмена
-git merge work --no-commit и окажемся в состоянии преравнного слияния
-cat ./git/MERGE_HEAD  файл с hash сливаемого коммита
-git merge --continue == git commit
+<strong>git reset --hard @~</strong> отмена
+<strong>git merge work --no-commit</strong> и окажемся в состоянии преравнного слияния
+<strong>cat ./git/MERGE_HEAD</strong>  файл с hash сливаемого коммита
+<strong>git merge --continue</strong> == <strong>git commit</strong>
 
 
 <h2>05 Слияние с сохранением веток, запрет перемотки --no-ff</h2>
 
-git merge feature --no-ff
-git show --first-parent
-git.config merge.ff false
-git.config branch.master.mergeoptions '--no-ff'
+<strong>git merge feature --no-ff</strong>
+<strong>git show --first-parent</strong>
+<strong>git.config merge.ff false</strong>
+<strong>git.config branch.master.mergeoptions '--no-ff'</strong>
 если такое настроено, можно включить явно:
-git merge --ff feature
+<strong>git merge --ff feature</strong>
 
 
 <h2>06 Слияние без связи с источником: merge --squash</h2>
 
 Если у нас аддские эксперименты в ветке  fix и мы хотим одним коммитом заить ее результат в нашу ветку
-git merge --squash fix
-git diff --cashed
-git commit -m 'то и это'
-git branch -D fix  можно удалить ветку фикс
+<strong>git merge --squash fix</strong>
+<strong>git diff --cashed</strong>
+<strong>git commit -m 'то и это'</strong>
+<strong>git branch -D fix  </strong>можно удалить ветку фикс
 
 если конфликт:
-git merge --squash feature
-Auto-merging index.html
+<strong>git merge --squash feature</strong>
+<strong>Auto-merging index.htm</strong>l
 CONFLICT (content): Merge conflict in index.html
 
 отменим
-git merge --abort
-fatal: There is no merge to abort (MERGE_HEAD missing). не получится
+<strong>git merge --abort</strong>
+<strong>fatal: There is no merge to abort (MERGE_HEAD missing).</strong> не получится
 
-git reset --merge  так работает
+<strong>git reset --merge</strong>  так работает
 когда конфликт, в индекс помещаются оба изменения
 , не закоммитить пока не разреш. конфл:
 Unmerged paths:
-  (use "git restore --staged <file>..." to unstage)
-  (use "git add <file>..." to mark resolution)
+  (use "git restore --staged &lt;file&gt;..." to unstage)
+  (use "git add &lt;file&gt;..." to mark resolution)
         both modified:   index.html
 
 конфликт также м. дать др. команды, например
-git stash pop
+<strong>git stash pop</strong>
 
 
 <h2>07 Слияние без конфликтов через драйвер union, свои драйверы</h2>
 
 драйвер слияния задается в .gitattributes
 по умолчанию txt Ф задается д. text
-*.txt merge=text
+<strong>*.txt merge=text</strong>
 для бинарн. по умолч. binary
-*.jpg merge=binary
-есть еще union
-/NEWS.ms merge=union
+<strong>*.jpg merge=binary</strong>
+есть еще <em>union</em>
+<strong>/NEWS.ms merge=union</strong>
 union просто вставляет все изменения в файл
 в union если в 1 ветке мы удалим какую-то стр. а в др. поменяем существующую, объед. версия вкл. в себя
 все строки, котор. есть хотя бы в 1м файле
@@ -873,47 +874,51 @@ union просто вставляет все изменения в файл
 при слиянии идут сначала наши строки, а потом вливаемые
 можно создать свой драйвер слияния
 свой др. слияния создается в конфиге
-[merge "po"]
-	name = Gettext merge driver
-	driver = git-merge-po.sh %O %A %B     путь к ф. из общ. предка, путь к нашей верс. ф., путь к в.ф. из слив. ветк.
+<strong>
+    [merge "po"]
+    	name = Gettext merge driver
+    	driver = git-merge-po.sh %O %A %B
+</strong>     путь к ф. из общ. предка, путь к нашей верс. ф., путь к в.ф. из слив. ветк.
 
 есть др. параметры, см. git help attributes
 когда драйвер создан, его надо назначить чз .gitattributes
-*.po merge=po
+<strong>*.po merge=po</strong>
 
 
  <h2>08 Стратегии слияния</h2> 
-recursuve
-octopus
-ours
-resolve
-subtree
+<em>
+    recursuve
+    octopus
+    ours
+    resolve
+    subtree
+</em>
 
-recursive - ours - конфл. в нашу пользу, theirs - б. выбираться сливаемый вариант
-git merge -Xours <commit>
-git merge -Xtheirs <commit>
-renormalise - нормализует концы строк для всех участвующих ф.
-ignore-all-space - для работы с пробелами; четыре пробела и таб не конфликт
+<em>recursive</em> - ours - конфл. в нашу пользу, theirs - б. выбираться сливаемый вариант
+git merge -Xours &lt;commit&gt;
+git merge -Xtheirs &lt;commit&gt;
+<em>renormalise</em> - нормализует концы строк для всех участвующих ф.
+<em>ignore-all-space</em> - для работы с пробелами; четыре пробела и таб не конфликт
 если в одной ветке изменили чуть файл, а в др. переименовали и чуть изменили, конфл. не будет,
 если git видит один файл и другой новый, кот. отлич от нашего <=50%, он считает, что это переименованный наш
--Xno-renames эту стратегию отменяет
-git merge -Xfind-renames=80 work
-subtree=path позволяет замерджить одну ветку в поддиректорию другой
-git merge -Xsubtree=plugin --allow-unrelated-histories plugin
-git subtree
+<strong>-Xno-renames</strong> эту стратегию отменяет
+<strong>git merge -Xfind-renames=80 work</strong>
+<strong>subtree=path </strong>позволяет замерджить одну ветку в поддиректорию другой
+<strong>git merge -Xsubtree=plugin --allow-unrelated-histories plugin</strong>
+<strong>git subtree</strong>
 также для интеграции сторонних репозиториев есть
-git submodule - В директорию проекта помещается не ветка, а сторонний репозиторий целиком
+<strong>git submodule </strong>- В директорию проекта помещается не ветка, а сторонний репозиторий целиком
 
 
-octopus исп-ся автоматич, когда треб. объединение более 2 веток 
+<em>octopus</em> исп-ся автоматич, когда треб. объединение более 2 веток 
 его основная область, большие проекты с изменениями в разных местах
 
-git merge -s ours <commit>
+<strong>git merge -s ours hash</strong>
 говорит полностью игнорировать содержимое сливаемой ветки
  
-resolve очень старая и ненужная recursive полностью ее заменяет
+<em>resolve</em> очень старая и ненужная recursive полностью ее заменяет
 
-subtree т.ж. что subtree в рекурс. слиянии. но в нее нельзя передавать путь
+<em>subtree</em> т.ж. что subtree в рекурс. слиянии. но в нее нельзя передавать путь
 
 
 
@@ -923,40 +928,40 @@ subtree т.ж. что subtree в рекурс. слиянии. но в нее н
 
 <h2>01 Копирование коммитов: cherry-pick</h2>
 
-git cherry-pick D
+<strong>git cherry-pick D</strong>
 берет diff указанного коммита и применяет его к текущей ветки, создавая новый коммит эти два коммита называют эквивалентными, т.к. они содерж. одинаковые изменения
 D D' - эквив. коммиты
-git cherry-pick -x   x добавляет в описание коммита строку с инфой, откуда он был скопирован
-git cherry-pick hash hash черипикинг нескольких коммитов (начинает с более раннего коммита)
-git cherry-pick master..feature  - или диапазона (все коммиты фичер, кот. нет в мастер)
+<strong>git cherry-pick -x</strong>   x добавляет в описание коммита строку с инфой, откуда он был скопирован
+<strong>git cherry-pick hash hash</strong> черипикинг нескольких коммитов (начинает с более раннего коммита)
+<strong>git cherry-pick master..feature </strong> - или диапазона (все коммиты фичер, кот. нет в мастер)
 если ошибка слияния   
-git cherry-pick abort - отменит скопированные коммиты и вернет все как было до chp
-git cherry-pick continue продолжит
-git cherry-pick quit применит что применилось и дальше не пойдет
-git reflog --no-decorate -3
-git reset --hard HEAD@{2}
-git cherry-pick no-commit hash == git cherry-pick -n hash  внесет изменения в раб. дир. и индекс, мы сможем подредактировать что надо
-git diff --cached
+<strong>git cherry-pick abort</strong> - отменит скопированные коммиты и вернет все как было до chp
+<strong>git cherry-pick continue </strong>продолжит
+<strong>git cherry-pick quit</strong> применит что применилось и дальше не пойдет
+<strong>git reflog --no-decorate -3</strong>
+<strong>git reset --hard HEAD@{2}</strong>
+<strong>git cherry-pick no-commit has</strong>h == <strong>git cherry-pick -n hash</strong>  внесет изменения в раб. дир. и индекс, мы сможем подредактировать что надо
+<strong>git diff --cached</strong>
 
 <h2>02 Просмотр эквивалентных коммитов: cherry, cherry-mark</h2>
 
 можно обмениваться изменениями чз форумы, чаты, емейлы, используя команды 
-git patch
-git apply
+<strong>git patch</strong>
+<strong>git apply</strong>
 и др..
-git cherry master feature - покажет коммиты из f которым есть экв. в мастер
-- коммит, у которого есть копия в мастер
-+ нет копии
-git cherry master feature -v    с описанием
+<strong>git cherry master feature</strong> - покажет коммиты из f которым есть экв. в мастер
+<strong>- </strong>коммит, у которого есть копия в мастер
+<strong>+ </strong>нет копии
+<strong>git cherry master feature -v </strong>  с описанием
 если указать только одну ветку, вторая равна HEAD
-git cherry feature - покаж. коммиты из HEAD кот. есть экв. в Feature
-но можно git log feature...master
-git log --cherry-pick feature...master удаляет эквив. коммиты из вывода
-git log --cherry-mark feature...master помечает э.к.
-git log --cherry-mark --oneline --left-right feature...master   знаком больше комм. из правой в. меньше из левой
-git log --cherry-mark --oneline --left-only feature...master  только из feature
+<strong>git cherry feature </strong>- покаж. коммиты из HEAD кот. есть экв. в Feature
+но можно <strong>git log feature...master</strong>
+<strong>git log --cherry-pick feature...master</strong> удаляет эквив. коммиты из вывода
+<strong>git log --cherry-mark feature...master</strong> помечает э.к.
+<strong>git log --cherry-mark --oneline --left-right feature...master</strong>   знаком больше комм. из правой в. меньше из левой
+<strong>git log --cherry-mark --oneline --left-only feature...master  </strong>только из feature
 --right-only только из мастер
-git log --oneline --cherry  == git log --right-only --no-merges  (?)
+<strong>git log --oneline --cherry</strong>  == <strong>git log --right-only --no-merges </strong> (?)
 
 
 
@@ -966,55 +971,55 @@ git log --oneline --cherry  == git log --right-only --no-merges  (?)
 <h2> 01 Перебазирование веток: rebase</h2> 
 
 находимся на feature
-git rebase master перебазирует feature на master
+<strong>git rebase master</strong> перебазирует feature на master
 Если посередине застрянет,
-git reset --hard не сработает, т.к. рипозиторий наход. в состоянии detached HEAD
-git rebase --abort
-git rebase --quit   не возвращает обратно HEAD
-git rebase --skip пропустит конфликтный коммит
+<strong>git reset --hard </strong>не сработает, т.к. рипозиторий наход. в состоянии detached HEAD
+<strong>git rebase --abort</strong>
+<strong>git rebase --quit</strong>   не возвращает обратно HEAD
+<strong>git rebase --skip </strong>пропустит конфликтный коммит
 коммиты, которые изменения не дают, называют пустыми, и rebase их пропускает автоматически 
 Допустим, мы передумали
 вначале работы rebase создает ORIG_HEAD
-cat .git/ORIG_HEAD
+<strong>cat .git/ORIG_HEAD</strong>
 так что как правило все вернет
-git reset --hard ORIG_HEAD
+<strong>git reset --hard ORIG_HEAD</strong>
 Если вдруг удалилось м. посмотреть reflog Именно ветки
-git reflog feature -1
-git show --quiet feature@{1}
-git rebase master feature  означает, что нужно перенести feature на master
+<strong>git reflog feature -1</strong>
+<strong>git show --quiet feature@{1}</strong>
+<strong>git rebase master feature </strong> означает, что нужно перенести feature на master
 
 <h2>02 Rebase против merge: сравнение подходов</h2>
 
-главный плюс rebase - упрощение истории разработки
-sourcetree - графич. утилита для работы с git
-минус - коммит в ребэйс может оказаться "сломанным": напр. вызвал переименованную в мастере функцию
+главный <em>плюс</em> rebase - упрощение истории разработки
+<em>sourcetree</em> - графич. утилита для работы с git
+<em>минус</em> - коммит в ребэйс может оказаться "сломанным": напр. вызвал переименованную в мастере функцию
 еще минус, когда два разработчика работают над одной и т.ж. веткой
-git rebase -x '...' master позволяет запускать команду в кавычках после каждого коммита (обычно это тесты)
+<strong>git rebase -x '...' master</strong> позволяет запускать <em>команду</em> в кавычках после каждого коммита (обычно это тесты)
 
 <h2>03 Тесты при rebase, rebase -x</h2>
 
-git rebase -x 'node feature.js' master
+<strong>git rebase -x 'node feature.js' master</strong>
 исправили
-git add feature.js
-git commit --amend --no-edit
-git rebase --continue
+<strong>git add feature.js</strong>
+<strong>git commit --amend --no-edit</strong>
+<strong>git rebase --continue</strong>
 
 
 <h2>04 Перенос части ветки, rebase --onto</h2>
 
 чтобы указать с какого момента нужно копировать
-git rebase --onto master feature  надо перебаз. на мастер текущ ветку (fix) начиная с указателя на feature ==
-git rebase --onto master feature fix
+<strong>git rebase --onto master feature</strong>  надо перебаз. на мастер текущ ветку (fix) начиная с указателя на feature ==
+<strong>git rebase --onto master feature fix</strong>
 
 rebase и ch-p иногда заменяют др. друга
-git checkout feature
-git cherry-pick master~2..master
-git branch -f master master~2
+<strong>git checkout feature</strong>
+<strong>git cherry-pick master~2..master</strong>
+<strong>git branch -f master master~2</strong>
 
 
 <h2>05 Перебазирование слияний, rebase -p</h2>
 
-git rebase --preserve-merges master == git rebase -p master
+<strong>git rebase --preserve-merges master</strong> ==<strong> git rebase -p master</strong>
 сохраняет коммиты слияния (по умолчанию - нет)
 при такой опции, коммит слияния копируется, а также коммиты из сторонней ветки (до слияния) НЕ КОПИРУЮТСЯ!
 
@@ -1024,26 +1029,26 @@ git rebase --preserve-merges master == git rebase -p master
 
 <h2>06 Интерактивное перебазирование, rebase -i</h2>
 
-git rebase --edit-todo Если сделали пару коммитов посередине и надо посмотреть .что еще надо сделать
-git rebase --continue
+<strong>git rebase --edit-todo </strong>Если сделали пару коммитов посередине и надо посмотреть .что еще надо сделать
+<strong>git rebase --continue</strong>
 иногда интеракт перебаз. делают только для улучшения истории, тогда надо перебаз. ветку на саму себя
-git rebase -i @~3
+<strong>git rebase -i @~3</strong>
 ребейз полностью копирует всю ветку, т.к. менять коммиты нельзя
 но если в редакторе оставить первые коммиты Как pick, 
 будут копир. коммиты с момента первого кот. не пик
 если очень хочется перебазировать именно все, можно использовать флаг
---no-ff
+<strong>--no-ff</strong>
 
 
 <h2>07 Коммиты-заплатки: rebase autosquash</h2>
 
-git commit -a --fixup=@~ 
-git commit -a --fixup=hash
+<strong>git commit -a --fixup=@~ </strong>
+<strong>git commit -a --fixup=hash</strong>
 такой коммит в начало имени коммита ставит "fixup! название редактируемого коммита"
 но позже если запусить интерактивное перебазирование
-git rebase -i --autosquash
+<strong>git rebase -i --autosquas</strong>h
 или вкл. ее глобально по умолчанию
-git config --global rebase.autoSquash true
+<strong>git config --global rebase.autoSquash true</strong>
 по при ребайз автоматически заплатка поставится после нужного коммита с фиксапом 
 
 
@@ -1051,31 +1056,31 @@ git config --global rebase.autoSquash true
 
 
 <h2>01 Авторазрешение повторных конфликтов</h2>
-REuse REcorded REsolution
-git config rerere.enabled  true
+<em>REuse REcorded REsolution</em>
+<strong>git config rerere.enabled  true</strong>
 при конфликте появится надпись
-Recorded preimage for 'index.html'  - означает. что ререре запомнил состояние файла на мом. конфликта
+<strong>Recorded preimage for 'index.html' </strong> - означает. что ререре запомнил состояние файла на мом. конфликта
 разреш. конфл
-git add index.html
-git commit --no-edit
-И появл. Recorded resolution for 'index.html'.
-git config rerere.autoUpdate true тогда rerere будет добавлять результат исправления конфл. в индекс
+<strong>git add index.html</strong>
+<strong>git commit --no-edit</strong>
+И появл. <strong>Recorded resolution for 'index.html'</strong>.
+<strong>git config rerere.autoUpdate true</strong> тогда rerere будет добавлять результат исправления конфл. в индекс
 если запомненное решение конфликта нам не подходит, можно получить файл с конфликтом:
-git checkout --merge index.html
-git rerere forget index.html забыли старое разрешение конфликта
+<strong>git checkout --merge index.html</strong>
+<strong>git rerere forget index.html</strong> забыли старое разрешение конфликта
 сделали по-другому 
-git commit -a --no-edit
-.git/rr-cache/ тут все данные по конфл. rerere
+<strong>git commit -a --no-edit</strong>
+<strong>.git/rr-cache/</strong> тут все данные по конфл. rerere
 можно удалить махом все данные по разреш. конфл.
-rm -rf .git/rr-cache
-также это удаляет сборщик мусора, если они старше чем в конфиге rerere.rerereResolved (60 дней)
-rerere.rerereUnresolved (15 дней)
+<strong>rm -rf .git/rr-cache</strong>
+также это удаляет сборщик мусора, если они старше чем в конфиге <strong>rerere.rerereResolved </strong>(60 дней)
+<strong>rerere.rerereUnresolved </strong>(15 дней)
 если Rerere надоел
-git config rerere.enabled false либо
-git config --unset rerere.enabled но тогда еще нужно убить директорию .git/rr-cache
-rerere-train.sh скрипт обучения rerere обычно встроен в git
+<strong>git config rerere.enabled false</strong> либо
+<strong>git config --unset rerere.enabled </strong>но тогда еще нужно убить директорию <strong>.git/rr-cache</strong>
+<strong>rerere-train.sh</strong> скрипт обучения rerere обычно встроен в git
 если включили уже после повторения конфликта можно обучить:
-путь к rerere-train.sh --all
+<strong>путь к rerere-train.sh --all</strong>
 
 
 
@@ -1086,15 +1091,15 @@ rerere-train.sh скрипт обучения rerere обычно встроен
 
 создает противоположный коммит
 можно указать диапазон
-git revert A..D создаст коммиты B^ C^ D^
+<strong>git revert A..D</strong> создаст коммиты B^ C^ D^
 git revert поддерживает практически все флаги команды cherry-pick
 
 
 <h2>02 Отмена слияния через revert</h2>
 
-git revert -m 1 @ 
+<strong>git revert -m 1 @ </strong>
 смотрим, чего наотменяли
-git diff @~
+<strong>git diff @~</strong>
 если потом пофиксили баги в фичер и снова хотим слить с мастер,  
 в мастере лучше произвести отмену отмены слияния перед этим
 иначе будут конфликты, гит не понимает что отмена вообще была
@@ -1102,16 +1107,16 @@ git diff @~
 
 <h2>03 Повторное слияние с rebase</h2>
 
-git rebase --onto master f94fdd feature  (c момента расхождения до первого слияния)
-git checkout master
-git merge --no-ff --no-edit feature
+<strong>git rebase --onto master f94fdd feature</strong>  (c момента расхождения до первого слияния)
+<strong>git checkout master</strong>
+<strong>git merge --no-ff --no-edit feature</strong>
 т.о. не потребовалось дополнительных финтов ушами типа отмены отмены 
 но это удобно только если это наша ветка без проблем с синхронизацией с коллегами
 
 
 второй вариант: чтобы убрать переплетения с мастер, перебазируем фичу рядом с собой с момента расхождения
-git checkout feature
-git rebase f94fdd --no-ff
+<strong>git checkout feature</strong>
+<strong>git rebase f94fdd --no-ff</strong>
 
 
 
@@ -1120,169 +1125,58 @@ git rebase f94fdd --no-ff
 
 <h2>01 Передача даты в гит, форматы дат</h2>
 
-30.01.2018
-01/30/2018
-2018-01-30
-2018.01.30
+<strong>
+    30.01.2018
+    01/30/2018
+    2018-01-30
+    2018.01.30
+</strong>
 можно в виде юникс-таймстампа
 коммиты до второго января берутся до 2 января времени которое сейчас
 если брать только дату, время укажется текущее
 если только время, дата возьмется текущая 
 врем. зона берется текущая
 можно указать время как 4pm
-3 weeks = 3 weeks ago = 3.weeks.ago
-3 day = 3 days = 3 days ago и т.д.
-git log --before = '2 day'
-git log --before = 3.day так можно без кавычек, удобно
+3<strong> weeks = 3 weeks ago = 3.weeks.ago</strong>
+<strong>3 day = 3 days = 3 days ago</strong> и т.д.
+<strong>git log --before = '2 day'</strong>
+<strong>git log --before = 3.day </strong>так можно без кавычек, удобно
 можно
-1 year 2 months 5 minutes 1 second
-one year two months (умеет считать от нуля zero до десяти)
-yesterday
-midnight
-noon
-tea пять вечера
-last friday
-never 
-now
-git config --global gc.reflogExpire=never рефлог не будет чиститься никогда
-git reflog expire --expire=now --all очистит все рефлоги
-git reflog expire --expire=all --all
+<strong>1 year 2 months 5 minutes 1 second</strong>
+<strong>one year two months </strong>(умеет считать от нуля zero до десяти)
+<strong>
+    yesterday
+    midnight
+    noon
+</strong>
+<strong>tea </strong>пять вечера
+<strong>last friday</strong>
+<strong>
+    never 
+    now
+</strong>
+<strong>git config --global gc.reflogExpire=never</strong> рефлог не будет чиститься никогда
+<strong>git reflog expire --expire=now --all </strong>очистит все рефлоги
+<strong>git reflog expire --expire=all --all</strong>
 
 <h2>02 Форматирование для вывода дат</h2>
 
-git log --date=
-default
-rfc
-iso
-iso-strict
-short
-unix
-raw
-relative
-format: '%F$T' см. strftime
-ко всем форматам можно применить суфф. -local чтобы переводить даты в локальную таймзону
+<strong>git log --date=</strong>
+<em>
+    default
+    rfc
+    iso
+    iso-strict
+    short
+    unix
+    raw
+    relative
+</em>
+<strong>format: '%F$T'</strong> см. <em>strftime</em>
+ко всем форматам можно применить суфф. <em>-local</em> чтобы переводить даты в локальную таймзону
 (если мы разрабатываем в команде с иностранцами)
-git log --date=iso-local
-git log --date=format-local: '%F %T'
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
- 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    
+<strong>git log --date=iso-local</strong>
+<strong>git log --date=format-local: '%F %T'</strong>
+</pre>   
 </body>
 </html>
