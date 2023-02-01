@@ -25,13 +25,19 @@
         textconv = identify --format '%wx%h %b\n'
 </strong>
 уровни конфигурации
-<strong>--system</strong> на уровне системы хран в директ git/etc В program files
-<strong>--global</strong> на ур. пользователя обычно лежат в папке пользователя. где они хранятся, 
+<strong>--system</strong> на уровне системы 
+хран в директ C:\Program Files\Git\etc\gitconfig
+в винд. еще в C:\ProgramData\Git\config
+<strong>--global</strong> на ур. пользователя
+обычно лежат в папке пользователя. C:\Users\&lt;USERNAME&gt;\gitconfig
+где они хранятся, 
 определяет формат XDG: путь хранится в переменной окружения
-<strong> $XDG_CONFIG</strong>_HOME -если она вдруг есть, надо переместить из папки пользователя свой конфиг туда
+<strong> $XDG_CONFIG_HOME </strong> -если она вдруг есть, надо переместить из папки пользователя свой конфиг туда
 эта перем. работает и для .gitignore И для .gitattributes
 если ее нет, то в $HOME/.config
 <strong>--local</strong> локальные (по дефолту)
+
+\&lt;project&gt;\.git\config
 
 <strong>git config --list</strong> просмотр конфигурации из всех конфигов
 <strong>git congit --list --global</strong> только глоб.
